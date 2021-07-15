@@ -1,0 +1,58 @@
+﻿@model List<PixelItBMP>
+
+<script>
+    $(".gif").hover(
+        function()
+        {
+            var src = $(this).attr("src");
+            $(this).attr("src", src.replace(/\.png$/i, ".gif"));
+        },
+        function()
+        {
+            var src = $(this).attr("src");
+            $(this).attr("src", src.replace(/\.gif$/i, ".png"));
+        });
+
+        $(".card").bind("click", function () {
+            $('#popup').html("Loading...").modal()
+                .load("@Url.Action("DetailPopup")/?id=" + $(this).attr('contentid'));
+        });
+</script>
+
+@foreach (var x in Model)
+{
+    @if (x.SizeX == 8)
+    {
+        <div class="card" style="width: 6rem; margin: 10px 10px" contentid="@x.ID">
+            <img class="card-img-top @(x.Animated ? "gif" : "")" src="~/images/@(x.ID).png" onerror="this.onerror=null; this.src='./images/missing.png'")" alt="@x.Name">
+            <div>
+                <div style="height: 48px; background-color: whitesmoke">
+                    <div class="smallLineheigh">
+                        <small>@(x.Name.Length > 12 ? x.Name.Substring(0, 12) + "..." : x.Name)</small>
+                    </div>
+                    <div class="smallerLineheigh">
+                        <i class="material-icons md-20" style="vertical-align: middle;color:@(x.Animated ? "springgreen" : "grey")" title="@(x.Animated ? "Animated" : "Not animated")">subscriptions</i><br />
+                        <small>ID: @x.ID</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else if (x.SizeX == 32)
+    {
+        <div class="card" style="width: 12rem; height:7rem; margin: 10px 10px" contentid="@x.ID">
+            <img class="card-img-top @(x.Animated ? "gif" : "")" src="~/images/@(x.ID).png" onerror="this.onerror=null; this.src='./images/missing.png'")" alt="@x.Name">
+            <div>
+                <div style="height: 54px; background-color: whitesmoke">
+                    <div class="smallLineheigh">
+                        <small>@(x.Name.Length > 24 ? x.Name.Substring(0, 24) + "..." : x.Name)</small>
+                    </div>
+                    <div class="smallerLineheigh">
+                        <i class="material-icons md-20" style="vertical-align: middle;color:@(x.Animated ? "springgreen" : "grey")" title="@(x.Animated ? "Animated" : "Not animated")">subscriptions</i><br />
+                        <small>ID: @x.ID</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,253 @@
+﻿@model CreatorConfig
+
+@section Style{
+    <link href="~/fonts/material-design-icons/material-icons.css" rel="stylesheet" />
+    <style>
+        #bmp {
+            display: table;
+            border-spacing: 2px;
+            background-color: rgb(194, 193, 193);
+            border: 2px;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .trow {
+            display: table-row;
+        }
+
+        .pixel {
+            display: table-cell;
+            background-color: black;
+            width: 30px;
+            height: 30px;
+        }
+
+        .huebee__cursor {
+            width: 25px;
+            height: 25px;
+        }
+    </style>
+
+}
+
+@section Scripts{
+    <script>
+$(function () {
+
+    var penColor = "#08f";
+    var output;
+
+    $("#pixel-ipdaress").val(Cookies.get("pixel-ipdaress"));
+    $("#output").val(Cookies.get("last_pixel_array8x@(Model.SizeX)"));
+    RGB565IntArrayPaint();
+
+    var hueb = new Huebee('.color-input', {
+        // options
+        notation: 'hex',
+        saturations: 3,
+    });
+
+    hueb.on('change', function (color, hue, sat, lum) {
+        penColor = color;
+    })
+
+    $(".pixel").click(function () {
+        $(this).css('background-color', penColor);
+        output = "";
+        $(".pixel").each(function () {
+            var array = CreateRGBSplit($(this).css('background-color'))
+            var int16 = RGB888ToRGB565(array);
+            output += int16 + ",";
+        });
+
+        CreateOutput(output);
+
+        Cookies.set("last_pixel_array8x@(Model.SizeX)", $("#output").val(), {
+            expires: 30,
+            path: ''
+        });
+    });
+
+    $(".pixel").bind("contextmenu", function (e) {
+        $(this).css('background-color', "#000000");
+        output = "";
+        $(".pixel").each(function () {
+            var array = CreateRGBSplit($(this).css('background-color'))
+            var int16 = RGB888ToRGB565(array);
+            output += int16 + ",";
+        });
+        CreateOutput(output);
+        e.preventDefault();
+        Cookies.set("last_pixel_array8x@(Model.SizeX)", $("#output").val(), {
+            expires: 30,
+            path: ''
+        });
+    });
+
+    $("#output").keyup(function () {
+        RGB565IntArrayPaint();
+    });
+
+    $("#btn-clipboard").click(function () {
+        $("textarea").select();
+        document.execCommand('copy');
+    });
+
+    $("#btn-clear").click(function () {
+        $(".pixel").each(function () {
+            $(this).css('background-color', "#000000")
+            $("#output").val('')
+            Cookies.set("last_pixel_array8x@(Model.SizeX)", $("#output").val(), {
+                expires: 30,
+                path: ''
+            });
+        })
+    });
+
+    $("#btn-save").bind("click", function () {
+        $('#popup').html("Loading...").modal()
+            .load('@Url.Action("SavePopup")/?bitmap=' + encodeURIComponent($("#output").val()));
+    });
+
+    $("#btn-show").click(function () {
+        var bmpData = $("#output").val();
+
+        if (bmpData.includes("],[")) {
+            $.ajax({
+                type: "POST",
+                contentType: "text/plain; charset=utf-8",
+                dataType: "json",
+                url: 'http://' + $("#pixel-ipdaress").val() + '/api/screen',
+                data: '{"bitmapAnimation":{"data":[' + bmpData + '],"animationDelay": 200}}'
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                contentType: "text/plain; charset=utf-8",
+                dataType: "json",
+                url: 'http://' + $("#pixel-ipdaress").val() + '/api/screen',
+                data: '{"bitmap":{"data":' + bmpData + ',"position":{"x":0,"y":0},"size":{"width":@Model.SizeX,"height":8}}}'
+            });
+        }
+
+        Cookies.set("pixel-ipdaress", $("#pixel-ipdaress").val(), {
+            expires: 30,
+            path: ''
+        });
+    });
+
+    $("#livedraw").change(function () {
+        if ($(this).prop('checked')) {
+            connection = new WebSocket('ws://' + $("#pixel-ipdaress").val() + ':81/setScreen');
+
+            connection.onopen = function () { }
+
+            connection.onerror = function (error) {
+                // Debug
+                console.log('WebSocket Error ' + error);
+                if (connection.readyState !== WebSocket.CLOSED) {
+                    connection.close();
+                }
+            }
+        } else {
+            if (connection != null && connection.readyState != WebSocket.CLOSED) {
+                connection.close();
+            }
+        }
+
+    });
+
+});
+    </script>
+
+}
+
+
+@{
+    ViewData["Title"] = $"Pixel Creator 8x{Model.SizeX}";
+}
+
+
+<div class="@((Model.SizeX > 8)?"col-md-12":"offset-md-3 col-md-5")">
+    <br />
+    <div class="card col-md-12 box-shadow">
+        <div class="card-body">
+            <h5 class="card-title">Pixel Bitmap Creator (8x@(Model.SizeX))</h5>
+            <div class="row justify-content-center">
+                <form asp-action="Index" asp-controller="PixelCreator">
+                    <div class="col-auto">
+                        <div class="text-left">
+                            <div class="custom-control custom-radio  custom-control-inline">
+                                <input type="radio" id="customRadio1" name="creatorType" class="custom-control-input" value="Pixel_8x8" @((Model.SizeX == 8) ? "checked" : "")>
+                                <label class="custom-control-label" for="customRadio1">8x8 Pixel</label>
+                            </div>
+                            <div class="custom-control custom-radio  custom-control-inline">
+                                <input type="radio" id="customRadio2" name="creatorType" class="custom-control-input" value="Pixel_8x32" @((Model.SizeX == 32) ? "checked" : "")>
+                                <label class="custom-control-label" for="customRadio2">8x32 Pixel</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <p></p>
+            <div>
+                <div>
+                    <input class="color-input form-control" value="#08F"
+                           onfocus="blur();" />
+                </div>
+            </div>
+            <p></p>
+            <div class="center">
+                <div id="bmp">
+                    @for (var x = 0; x < 8; x++)
+                    {
+                    <div class="trow">
+                        @for (var y = 0; y < Model.SizeX; y++)
+                            {
+                        <div class="pixel"></div>
+                            }
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <p></p>
+            <textarea class="form-control" rows="4" id="output"></textarea>
+            <p></p>
+            <div class="input-group">
+                <input type="text" class="form-control text-center" placeholder="Local Pixel It IP-Address" id="pixel-ipdaress">
+                <div class="input-group-append">
+                    <a href="#/" id="btn-show" class="btn btn-outline-info">Show on Pixel It</a>
+                </div>
+            </div>
+            <div class="custom-control custom-switch text-center">
+                <input type="checkbox" class="custom-control-input" id="livedraw">
+                <label class="custom-control-label" for="livedraw">LiveDraw active</label>
+                <a href="https://docs.bastelbunker.de/pixelit/tools.html#pixel-creator" target="_blank" title="Help">[?]</a>
+            </div>
+            <p></p>
+            <div class="text-center">
+                <p>
+                    <a href="#/" id="btn-clipboard" class="btn btn-outline-success">
+                        Copy to
+                        Clipboard
+                    </a>
+                    <a href="#/" id="btn-save" class="btn btn-outline-secondary">Save in Database</a>
+                </p>
+            </div>
+            <div class="text-center">
+                <p>
+                    <a href="#/" id="btn-clear" class="btn btn-outline-danger">Clear Bitmap Creator</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="popup" class="modal" tabindex="-1" role="dialog"></div>

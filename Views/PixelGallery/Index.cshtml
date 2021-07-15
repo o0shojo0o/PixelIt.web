@@ -1,0 +1,121 @@
+﻿@model List<PixelItBMP>
+
+@section Style{
+    <style>
+        .smallLineheigh {
+            line-height: 1.0;
+        }
+
+        .smallerLineheigh {
+            line-height: 0.5;
+        }
+
+        #bmp {
+            display: table;
+            border-spacing: 1px;
+            background-color: rgb(194, 193, 193);
+            border: 1px;
+        }
+
+        .trow {
+            display: table-row;
+        }
+
+        .pixel {
+            display: table-cell;
+            background-color: black;
+            width: 10px;
+            height: 10px;
+        }
+
+        #center {
+            text-align: center;
+        }
+
+        .card {
+            cursor: pointer;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script>
+
+        $(document).on('keypress', function (e) {
+            if (e.which == 13) {
+                Search();
+            }
+        })
+
+        $("#btnSearch").click(function () {
+            Search();
+        });
+
+        function Search() {
+              var searchText = $("#searchText").val();
+            $("#pixelCards").load("@Url.Action("PixelCards")/?search=" + encodeURI($('#searchText').val()) + "&type=" + $('input[name="bmpType"]:checked').val());
+        }
+
+        $(".gif").hover(
+        function()
+        {
+            var src = $(this).attr("src");
+            $(this).attr("src", src.replace(/\.png$/i, ".gif"));
+        },
+        function()
+        {
+            var src = $(this).attr("src");
+            $(this).attr("src", src.replace(/\.gif$/i, ".png"));
+        });
+
+        $(".card").bind("click", function () {
+            $('#popup').html("Loading...").modal()
+                .load("@Url.Action("DetailPopup")/?id=" + $(this).attr('contentid'));
+        });
+    </script>
+}
+
+
+@{
+    ViewData["Title"] = "Pixel Gallery";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Pixel Gallery</h1>
+
+
+    <div class="row justify-content-center">
+        <div class="col-11">
+            <div class="input-group mb-3">
+                <input id="searchText" type="text" class="form-control text-center" placeholder="Name, ID, Username... " aria-label="Bitmap name">
+                <button id="btnSearch" class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <div class="text-left">
+                        <div class="custom-control custom-radio  custom-control-inline">
+                            <input type="radio" id="customRadio1" name="bmpType" class="custom-control-input" value="Both" checked>
+                            <label class="custom-control-label" for="customRadio1">All</label>
+                        </div>
+                        <div class="custom-control custom-radio  custom-control-inline">
+                            <input type="radio" id="customRadio2" name="bmpType" class="custom-control-input" value="Animated">
+                            <label class="custom-control-label" for="customRadio2">Animated</label>
+                        </div>
+                        <div class="custom-control custom-radio  custom-control-inline">
+                            <input type="radio" id="customRadio3" name="bmpType" class="custom-control-input" value="NotAnimated">
+                            <label class="custom-control-label" for="customRadio3">Not animated</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+    <div id="pixelCards" class="row justify-content-center">
+        <partial name="_PixelCards" model="Model" />
+    </div>
+</div>
+
+
+
+<div id="popup" class="modal" tabindex="-1" role="dialog"></div>

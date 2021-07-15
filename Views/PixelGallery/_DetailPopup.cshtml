@@ -1,0 +1,38 @@
+﻿
+@model PixelItBMP
+
+<script>
+    $("#btn-clipboard").click(function () {
+        $("textarea").select();
+        document.execCommand('copy');
+    });
+</script>
+
+<div class="modal-dialog" role="document">
+    
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">@Model.Name</h5>
+            <img src="https://matomo.dietru.de/matomo.php?idsite=6&amp;rec=1" style="border:0" alt="" />
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="float-right">
+                <img class="card-img-top" src="~/images/@(Model.ID)@(Model.Animated ?".gif":".png")" onerror="this.onerror=null; this.src='./images/missing.png'")" alt="@Model.Name">
+            </div>
+            <b>Added by:</b> @(Model.Username) <br />
+            <b>Added on:</b> @(((DateTime)Model.DateTime).ToShortDateString())<br />
+            <b>Animated:</b> <i class="material-icons" style="vertical-align: middle; color:@(Model.Animated ?"springgreen":"grey")" title="@(Model.Animated ?"Animated":"Not animated")">subscriptions</i><br /><br />
+            <p></p>
+            <textarea class="form-control" readonly rows="10" id="output">@Model.RGB565Array</textarea>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="btn-clipboard" class="btn btn-outline-success">
+                Copy to Clipboard
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
