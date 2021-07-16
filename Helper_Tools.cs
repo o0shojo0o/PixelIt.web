@@ -9,10 +9,10 @@ namespace PixelIT.web
     public class Data
     {
         /// <summary>
-        /// Gibt die Größe in der optimalen Umrechnung aus.
+        /// Outputs the size in the optimal conversion.
         /// </summary>
-        /// <param name="bytes">Dateigrösse in Byte</param>
-        /// <returns>String mit Einheit z.B. "100.00 MB"</returns>
+        /// <param name="bytes">File size in byte</param>
+        /// <returns>String with unit e.g. "100.00 MB".</returns>
         public static string ToFuzzyByteString(long bytes)
         {
             double s = bytes;
@@ -38,11 +38,11 @@ namespace PixelIT.web
         }
 
         /// <summary>
-        /// Gibt die Größe einen Ordners aus.
+        /// Returns the size of a folder.
         /// </summary>
-        /// <param name="path">Pfad zum Ordner</param>
-        /// <param name="includeSubDirectories">Sollen die Unterordner mit einbezogen werden?</param>
-        /// <returns>Ordnergrösse in Byte</returns>
+        /// <param name="path">Path to folder</param>
+        /// <param name="includeSubDirectories">Should the subfolders be included?</param>
+        /// <returns>Folder size in bytes</returns>
         public static long GetDirectorySize(string path, bool includeSubDirectories)
         {
             long size = 0;

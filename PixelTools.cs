@@ -244,7 +244,7 @@ namespace PixelIT.web
         public static string ApplicationName { get; set; }
 
         /// <summary>
-        /// GUID für die laufende Instanz, wird bei jedem Programmstart neu generiert
+        /// GUID for the running instance, is regenerated at every program startup
         /// </summary>
         public static string InstanceGUID { get; set; }
         public static object GlobalExceptionHandler { get; private set; }
@@ -256,7 +256,7 @@ namespace PixelIT.web
                 throw new Exception(String.Format("ApplicationName darf nicht leer sein!"));
             }
 
-            // Application-Name und InstanceGUID setzen
+            // Set Application Name and InstanceGUID
             ApplicationName = startupOptions.ApplicationName;
             InstanceGUID = Guid.NewGuid().ToString();
 
@@ -265,17 +265,17 @@ namespace PixelIT.web
             serilogConfig = serilogConfig.Enrich.With<LogEnricherBase>();
             serilogConfig = serilogConfig.Enrich.FromLogContext();
 
-            // an Seq senden ?    
+            // Send to Seq?    
             if (startupOptions.SerilogConfiguration.WriteToSeq == true)
             {
                 serilogConfig = serilogConfig.WriteTo.Seq(startupOptions.SerilogConfiguration.SeqServer, apiKey: startupOptions.SerilogConfiguration.SeqAPIKey);
             }
 
-            // und finale Instanz setzen
+            // and final instance set
             Log.Logger = serilogConfig.CreateLogger();
 
-            // Cleanup-Code aktivieren... der Code wird nicht immer aufgerufen, z.B. bei Consolen-Anwendung wenn man Ctrl-C drückt
-            // oder bei einer Webanwendung, wo die Instanz runtergefahren wird... 
+            // Enable cleanup code... the code is not always called, e.g. in console application when pressing Ctrl-C
+            // or with a web application where the instance is shut down.... 
             AppDomain.CurrentDomain.ProcessExit += (s, e) =>
             {
                 App.ShutdownApplication();
@@ -283,7 +283,7 @@ namespace PixelIT.web
         }
 
         /// <summary>
-        /// Beendet die SIBS-Application
+        /// Exits the application
         /// </summary>
         public static void ShutdownApplication()
         {
@@ -323,18 +323,21 @@ namespace PixelIT.web
 
         public SerilogConfiguration()
         {
-            // Default setzen
-            WriteToSeq = true;
             WriteRollingFile = true;
             WriteRollingFilePath = "/app/logs/log-{Date}.txt";
             WriteToColoredConsole = true;
-            SeqServer = "http://seq:5341";
         }
 
         /// <summary>
         /// soll an Seq das Log gesendet werden ?
         /// </summary>
-        public bool WriteToSeq { get; set; }
+        public bool WriteToSeq
+        {
+            get
+            {
+                return !String.IsNullOrWhiteSpace(this.SeqServer) && !string.IsNullOrWhiteSpace(this.SeqAPIKey);
+            }
+        }
 
         /// <summary>
         /// soll an RollingFile das Log gesendet werden ?

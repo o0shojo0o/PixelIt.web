@@ -18,6 +18,7 @@
         public string MYSQL_DATABASE { get; set; }
         public string MYSQL_USER { get; set; }
         public string MYSQL_PASSWORD { get; set; }
-        public string DOWNLOAD_URL { get; set; }
+        public string SEQ_APIKEY { get; set; }
+        public string SEQ_SERVER { get; set; }
     }
 }

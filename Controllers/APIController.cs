@@ -15,13 +15,12 @@ namespace PixelIT.web.Controllers
         {
             using MySqlConnection con = new(Globe.ConnectionString);
             pixelRepo = new PixelItRepo(con);
-            // tokenRepo = new TokenRepo(con);
         }
 
         [HttpGet("GetBMPByID/{id}")]
         public JsonResult GetBMPByID(int id)
         {
-            // Log anreichern mit Controller und Function
+            // Enrich log with controller and function
             using (LogContext.PushProperty("Controller", ControllerContext.ActionDescriptor.ControllerName))
             using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))
             { 
@@ -29,12 +28,12 @@ namespace PixelIT.web.Controllers
                
                 if (bmpResult != null)
                 {
-                    Log.Information("BMP mit der ID {ID} und den Name {Name} erfolgreich ausgeliefert", bmpResult.ID, bmpResult.Name);         
+                    Log.Information("BMP with ID {ID} and name {Name} successfully delivered", bmpResult.ID, bmpResult.Name);         
                 }
                 else
                 {
                     bmpResult = new();
-                    Log.Warning("Kein BMP zu der ID:{ID} gefunden", id);
+                    Log.Warning("No BMP found for ID:{ID}", id);
                 }
 
                 return new JsonResult(bmpResult);
@@ -44,7 +43,7 @@ namespace PixelIT.web.Controllers
         [HttpGet("GetBMPNewst")]
         public JsonResult GetBMPNewst()
         {
-            // Log anreichern mit Controller und Function
+            // Enrich log with controller and function
             using (LogContext.PushProperty("Controller", ControllerContext.ActionDescriptor.ControllerName))
             using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))           
             {

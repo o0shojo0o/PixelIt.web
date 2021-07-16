@@ -21,14 +21,14 @@ namespace PixelIT.web
         {
             Configuration = configuration;
 
-            // Conifg mit den übergeben Enviroments füllen.
+            // Conifg fill with the passed Enviroments.
             Globe.Config = ConfigMapping.DictionaryToObject<Config>(configuration.AsEnumerable().ToDictionary(x => x.Key, x => x.Value));
 
-            // Init SKBB-Application
+            // Init Application
             App.InitApplication(new ApplicationStartupParameter()
             {
                 ApplicationName = "PixelIT.web",
-                SerilogConfiguration = new SerilogConfiguration() { SeqAPIKey = "g41kzFxNkTO14zQnv79k" }
+                SerilogConfiguration = new SerilogConfiguration() { SeqServer = Globe.Config.SEQ_SERVER, SeqAPIKey = Globe.Config.SEQ_APIKEY }
             });
 
             JobManager.AddJob(() => new PixelTools().CheckAndCreateThumb(), (s) => s.NonReentrant().ToRunEvery(1).Minutes());
@@ -46,14 +46,14 @@ namespace PixelIT.web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddRazorPages();
-            // Für HttpContext im Enricher
+            // For HttpContext in the enricher
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Nötige das die Client IP-Adresse auch greifbar ist.
+            // Necessary that the client IP address is also tangible.
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.All,

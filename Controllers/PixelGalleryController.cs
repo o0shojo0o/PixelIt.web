@@ -33,7 +33,7 @@ namespace PixelIT.web.Controllers
                         bmps.Add(bmp);
                     }
 
-                    Log.Information("BMP ID {ID} wurde übergeben", id);
+                    Log.Information("BMP ID {ID} was passed", id);
                 }
                 else
                 {
@@ -42,10 +42,10 @@ namespace PixelIT.web.Controllers
 
                 if (bmps.Count == 0)
                 {
-                    Log.Warning("Keine BMP zu der ID {ID} gefunden", id);
+                    Log.Warning("No BMP found for ID {ID}", id);
                 }
 
-                Log.Information("Seite ausgeliefert Count:{FoundBMPs}", bmps.Count);
+                Log.Information("Page delivered Count:{FoundBMPs}", bmps.Count);
                 return View(bmps);
             }
         }
@@ -56,7 +56,7 @@ namespace PixelIT.web.Controllers
             using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))
             {
                 PixelItBMP bmp = pixelRepo.GetBMPByID(id);
-                Log.Information("DetailPopup für das BMP mit der ID {ID} und den Name {Name} erfolgreich ausgeliefert", bmp.ID, bmp.Name);
+                Log.Information("DetailPopup for the BMP with the ID {ID} and the name {Name} successfully delivered.", bmp.ID, bmp.Name);
                 return PartialView("_DetailPopup", bmp);
             }
         }
@@ -82,7 +82,7 @@ namespace PixelIT.web.Controllers
                     result = new();
                 }
 
-                Log.Information("Seite mit SearchParam {SearchParam} und BMPType {BMPType} ausgeliefert Count:{FoundBMPs}", search, type, result.Count);
+                Log.Information("Page with SearchParam {SearchParam} and BMPType {BMPType} delivered Count:{FoundBMPs}", search, type, result.Count);
                 return PartialView("_PixelCards", result);
             }
         }

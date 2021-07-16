@@ -117,11 +117,11 @@ namespace PixelIT.web.Controllers
 
         public int CalcSizeX(string bitmap)
         {
-            // Ermitteln der Pixel
+            // Determine the pixels
             var pixelGesammt = bitmap.Split(',').Length;
-            // Durch 8 Rows
+            // By 8 Rows
             var size = pixelGesammt / 8;
-            // Durch die Array (Wenn animiert)
+            // By the array count (If animated)
             size /= bitmap.Count(x => x == '[');
 
             return size;
