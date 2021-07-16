@@ -3,7 +3,7 @@
 This is the web instance for the [PixelIt](https://github.com/o0shojo0o/PixelIt) project.  
 PixelIt.web provides the API, Pixel Gallery and Pixel Creator.  
   
-[Docu](https://docs.bastelbunker.de/pixelit/) |
+[Docu](https://docs.bastelbunker.de/pixelit/tools.html#pixel-creator) |
 [Forum](https://github.com/o0shojo0o/PixelIt/discussions) |
 [Blog](https://www.bastelbunker.de/pixel-it/) |
 [PixelIt Web](https://pixelit.bastelbunker.de/PixelGallery) |
