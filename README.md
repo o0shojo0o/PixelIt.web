@@ -1,8 +1,7 @@
-# PixelIt.web
+## PixelIt.web
 
-## AdGuard adapter for ioBroker
-
-AdGuard Home is a network-wide ad- and tracker-blocking DNS server with parental control (adult content blocking) capabilities. The AdGuard adapter allows you to control and monitor your AdGuard Home instance in ioBroker.
+This is the web instance for the [PixelIt](https://github.com/o0shojo0o/PixelIt) project.  
+PixelIt.web provides the API, Pixel Gallery and Pixel Creator. 
 
 ## Installation
 
