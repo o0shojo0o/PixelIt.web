@@ -34,7 +34,7 @@ namespace PixelIT.web.Controllers
                     creatorConfig.SizeX = 32;
                 }
 
-                Log.Information("Seite für 8x{SizeX} ausgeliefert", creatorConfig.SizeX);
+                Log.Information("Page for 8x{SizeX} delivered", creatorConfig.SizeX);
                 return View(creatorConfig);
             }
         }
@@ -55,14 +55,14 @@ namespace PixelIT.web.Controllers
                 {
                     if (String.IsNullOrEmpty(bitmap))
                     {
-                        Log.Warning("Neues BMP mit den Namen {Name} von den User {User} konnte nicht gespeichert werden, Bitmap leer!", bitmapname, username);
+                        Log.Warning("New BMP with the name {Name} from the user {User} could not be saved, bitmap empty!", bitmapname, username);
 
                         return StatusCode(406);
                     }
 
                     if (String.IsNullOrEmpty(bitmapname))
                     {
-                        Log.Warning("Neues BMP von den User {User} konnte nicht gespeichert werden, Bitmapname fehlt!", username, bitmap);
+                        Log.Warning("New BMP from the user {User} could not be saved, bitmap name is missing!", username, bitmap);
 
                         return StatusCode(406);
                     }
@@ -76,7 +76,7 @@ namespace PixelIT.web.Controllers
 
                     if (!ValidBitmap(bitmap))
                     {
-                        Log.Warning("Neues BMP mit den Namen {Name} von den User {User} konnte nicht gespeichert werden, Bitmap ist nicht valid!", bitmapname, username, bitmap);
+                        Log.Warning("New BMP with the name {Name} from the user {User} could not be saved, bitmap is not valid!", bitmapname, username, bitmap);
                         return StatusCode(406);
                     }
 
@@ -98,7 +98,7 @@ namespace PixelIT.web.Controllers
                     Log.Error(ex, "PixelCreator->SaveBitmap");
                 }
 
-                Log.Information("Neues BMP mit den Namen {Name} von den User {User} erfolgreich Gespeichert", bitmapname, username);
+                Log.Information("New BMP with the name {Name} successfully saved by the user {User}.", bitmapname, username);
                 return StatusCode(202);
             }
         }
