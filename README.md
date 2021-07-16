@@ -29,6 +29,8 @@ pixelitweb:
         MYSQL_DATABASE: database
         MYSQL_USER: user
         MYSQL_PASSWORD: password
+        SEQ_SERVER: http://seqserver:5341
+        SEQ_APIKEY: xxxxxxxxxxxx
 ```
 
 ## License
