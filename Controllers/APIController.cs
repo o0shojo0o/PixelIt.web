@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using Serilog;
 using Serilog.Context;
+using System.Collections.Generic;
 
 namespace PixelIT.web.Controllers
 {
@@ -49,6 +50,18 @@ namespace PixelIT.web.Controllers
             {
                 PixelItBMP bmpResult = pixelRepo.GetBMPNewst();
                 return new JsonResult(bmpResult);
+            }
+        }
+
+        [HttpGet("GetBMPAll")]
+        public JsonResult GetBMPAll()
+        {
+            // Enrich log with controller and function
+            using (LogContext.PushProperty("Controller", ControllerContext.ActionDescriptor.ControllerName))
+            using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))
+            {
+                List<PixelItBMP> bmpList = pixelRepo.GetBMPAll();
+                return new JsonResult(bmpList);
             }
         }
 
