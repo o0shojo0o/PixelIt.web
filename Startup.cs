@@ -48,6 +48,16 @@ namespace PixelIT.web
             services.AddRazorPages();
             // For HttpContext in the enricher
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy(name: "CorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +83,8 @@ namespace PixelIT.web
                 app.UseHsts();
             }
 
+            app.UseCors("CorsPolicy");
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -83,7 +95,7 @@ namespace PixelIT.web
             {
                 //endpoints.MapRazorPages();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            });
+            });                      
         }
     }
 }

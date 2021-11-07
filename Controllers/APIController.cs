@@ -61,6 +61,7 @@ namespace PixelIT.web.Controllers
             using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))
             {
                 List<PixelItBMP> bmpList = pixelRepo.GetBMPAll();
+                Log.Information("{Count} successfully delivered", bmpList.Count);
                 return new JsonResult(bmpList);
             }
         }
