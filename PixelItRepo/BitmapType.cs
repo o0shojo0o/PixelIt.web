@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace PixelIT.web
+﻿namespace PixelIT.web
 {
     public enum BitmapType
     {

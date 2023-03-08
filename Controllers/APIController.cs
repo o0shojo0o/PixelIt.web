@@ -24,12 +24,12 @@ namespace PixelIT.web.Controllers
             // Enrich log with controller and function
             using (LogContext.PushProperty("Controller", ControllerContext.ActionDescriptor.ControllerName))
             using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))
-            { 
+            {
                 PixelItBMP bmpResult = pixelRepo.GetBMPByID(id);
-               
+
                 if (bmpResult != null)
                 {
-                    Log.Information("BMP with ID {ID} and name {Name} successfully delivered", bmpResult.ID, bmpResult.Name);         
+                    Log.Information("BMP with ID {ID} and name {Name} successfully delivered", bmpResult.ID, bmpResult.Name);
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace PixelIT.web.Controllers
         {
             // Enrich log with controller and function
             using (LogContext.PushProperty("Controller", ControllerContext.ActionDescriptor.ControllerName))
-            using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))           
+            using (LogContext.PushProperty("Function", ControllerContext.ActionDescriptor.ActionName))
             {
                 PixelItBMP bmpResult = pixelRepo.GetBMPNewst();
                 return new JsonResult(bmpResult);

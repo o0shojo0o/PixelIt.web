@@ -21,10 +21,15 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation",
+        " MYSQL_HOST": "192.168.0.217",
+        "MYSQL_USER": "root",
+        "MYSQL_PASSWORD": "w3s4kAlefrwerKzDLB",
+        "MYSQL_HOST": "192.168.0.217",
+        "MYSQL_DATABASE": "mydatabase"
       },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:5000"
+      "applicationUrl": "http://localhost:5000",
+      "dotnetRunMessages": "true"
     },
     "Docker": {
       "commandName": "Docker",
