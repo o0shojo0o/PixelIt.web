@@ -20,7 +20,7 @@ RUN apt-get update; apt-get install -y wget xz-utils fontconfig libxrender1 libx
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["PixelIT.web.csproj", "."]
 RUN dotnet restore "./PixelIT.web.csproj"
